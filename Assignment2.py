@@ -3,7 +3,7 @@
 # Description: Sudoku puzzle solver, using depth-first-search with backtracking
 
 # Inputs: puzzle1.txt, puzzle2.txt, puzzle3.txt, puzzle4.txt, puzzle5.txt
-# Outputs: solution1.txt, solution2.txt, solution3.txt, solution4.txt, solution5.txt
+# Outputs: solutions for each puzzle displayed to the console
 
 # Collaborators: None
 # Sources: Richard Gilchrist, ChatGPT
@@ -137,7 +137,6 @@ class SudokuSolver():
         # use a nested for loop to iterate through all positions within the 3 x 3 square
         for row in range(start_row, end_row):
             for col in range(start_col, end_col):
-
                 # check if number is already present in the 3 x 3 square (excluding the current position)
                 if puzzle[row][col] == number and (row, col) != position:
                     # if yes, the number cannot be inserted and is thus invalid
@@ -216,7 +215,7 @@ class SudokuSolver():
                         print(f"{number}")
 
 
-# function to solve puzzle1.txt, puzzle2.txt, puzzle3.txt, puzzle4,txt, puzzle5.txt
+# function to solve puzzle1.txt, puzzle2.txt, puzzle3.txt, puzzle4.txt, puzzle5.txt
 # output in the console
 # SOURCE: Myself, ChatGPT
 def puzzleSolverMain():
@@ -267,63 +266,9 @@ def puzzleSolverMain():
         else:
             print("\nNo solution found")
 
-# function to solve puzzle1.txt, puzzle2.txt, puzzle3.txt, puzzle4,txt, puzzle5.txt
-# output in separate txt files
-# SOURCE: Myself, ChatGPT
-def puzzleSolverToOutFile():
-    # create a list of the puzzle file names
-    fileNames = ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt", "puzzle4.txt", "puzzle5.txt"]
-
-    # iterate through the list
-    for i in range(len(fileNames)):
-        # read the puzzle file into a clean string
-        puzzle_string = readFile(fileNames[i])
-
-        # convert the string into a 2D list
-        puzzle_board = getPuzzle(puzzle_string)
-
-        # create a SudokuSolver instance and call the solve_all() method
-        solver = SudokuSolver(puzzle_board)
-        solver.solve_all()
-
-        # open a corresponding output file in write mode (solution1.txt, solution2.txt, etc.)
-        output_filename = f"solution{i+1}.txt"
-        with open(output_filename, "w") as f:
-
-            # write header info
-            f.write(f"{fileNames[i]}\n\n")
-            f.write(f"Puzzle {i+1} Original:\n")
-
-            # use for loop to write the unsolved puzzle board to the file
-            for row in solver.puzzle:
-                # for each row, build a string (if num == 0, write underscore, otherwise keep the number)
-                # join the numbers with spaces and write to the file
-                f.write(" ".join("_" if num == 0 else str(num) for num in row) + "\n")
-
-            # if there is at least one solution
-            if solver.solutions:
-                #iterate through each solution stored in the list and write to the file
-                for idx, solution in enumerate(solver.solutions, 1):
-                    # write header into the file
-                    f.write(f"\nPuzzle {i+1} Solution #{idx}:\n")
-
-                    # iterate through each row of the solved puzzle board
-                    for row in solution:
-                        # for each row, build a string
-                        # join the numbers with spaces and write to the file
-                        f.write(" ".join(str(num) for num in row) + "\n")
-
-            # otherwise, no solution was found
-            else:
-                # write appropriate message to file
-                f.write("\nNo solution found\n")
-
-        # print statement in the console for clarity
-        print(f"Results for {fileNames[i]} written to {output_filename}")
-
-
 
 if __name__ == '__main__':
+    # call puzzleSolverMain() to run the program
     puzzleSolverMain()
-    #puzzleSolverToOutFile()
+
 
